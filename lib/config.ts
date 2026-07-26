@@ -19,11 +19,12 @@ export const QUALIFYING_KEYWORDS = [
 ];
 
 export const GOOGLE_SEARCH_QUERIES = [
-  '"request for proposals" branding "visual identity"',
-  '"RFP" "branding" OR "brand identity" site:.gov',
-  '"RFP" "branding" OR "design system" site:.edu',
-  '"request for proposals" "brand campaign" city OR county OR state',
-  '"RFP" "visual identity" OR "logo design" government',
+  "RFP branding",
+  "RFP visual identity",
+  "RFP design system",
+  "RFP brand campaign",
+  "request for proposals branding design",
+  "solicitation brand identity logo",
 ];
 
 export const SAM_NAICS_CODES = [
