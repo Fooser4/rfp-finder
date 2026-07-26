@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/rfps",
+      "schedule": "0 8 */14 * *"
+    }
+  ]
+}
