@@ -40,18 +40,18 @@ export async function GET() {
 
 function deduplicateAcrossSources(results: RFPResult[]): RFPResult[] {
   const unique: RFPResult[] = [];
-  const titles = new Set<string>();
+  const titles: string[] = [];
   for (const result of results) {
     const normalized = result.title.toLowerCase().replace(/[^a-z0-9\s]/g, "").trim();
     let isDuplicate = false;
-    for (const existing of titles) {
-      if (existing.includes(normalized) || normalized.includes(existing)) {
+    for (let i = 0; i < titles.length; i++) {
+      if (titles[i].includes(normalized) || normalized.includes(titles[i])) {
         isDuplicate = true;
         break;
       }
     }
     if (!isDuplicate) {
-      titles.add(normalized);
+      titles.push(normalized);
       unique.push(result);
     }
   }
