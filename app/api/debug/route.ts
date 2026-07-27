@@ -7,14 +7,18 @@ export async function GET() {
   const googleKey = process.env.GOOGLE_API_KEY;
   const searchId = process.env.GOOGLE_SEARCH_ENGINE_ID;
 
-  // Test SAM.gov
+  // Test SAM.gov with date params
   let samStatus = "unknown";
   let samData: any = null;
   try {
+    const today = new Date().toISOString().split("T")[0].replace(/-/g, "/");
+    const fourWeeksAgo = new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString().split("T")[0].replace(/-/g, "/");
     const params = new URLSearchParams({
       api_key: samKey || "",
-      q: "branding",
-      limit: "5",
+      q: "design",
+      limit: "10",
+      postedFrom: fourWeeksAgo,
+      postedTo: today,
       ptype: "p,o,k",
     });
     const res = await fetch(`https://api.sam.gov/opportunities/v2/search?${params.toString()}`);
@@ -46,9 +50,20 @@ export async function GET() {
       samKeySet: !!samKey,
       samKeyPrefix: samKey?.substring(0, 8) || "NOT SET",
       googleKeySet: !!googleKey,
+      googleKeyPrefix: googleKey?.substring(0, 10) || "NOT SET",
       searchIdSet: !!searchId,
+      searchIdValue: searchId || "NOT SET",
     },
-    sam: { status: samStatus, resultCount: samData?.opportunitiesData?.length || samData?.totalRecords || 0, raw: samData },
-    google: { status: googleStatus, resultCount: googleData?.items?.length || 0, error: googleData?.error || null },
+    sam: {
+      status: samStatus,
+      totalRecords: samData?.totalRecords || 0,
+      resultCount: samData?.opportunitiesData?.length || 0,
+      firstFewTitles: samData?.opportunitiesData?.slice(0, 3).map((o: any) => o.title) || [],
+    },
+    google: {
+      status: googleStatus,
+      resultCount: googleData?.items?.length || 0,
+      error: googleData?.error || null,
+    },
   });
 }
